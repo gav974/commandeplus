@@ -156,43 +156,48 @@ class HomepageState extends State<Homepage> {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.end,
+                  verticalDirection: VerticalDirection.down,
                   children: [
-                    Container(
-                      padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                      child: TextButton(onPressed: ()=>{},
-                            style:const ButtonStyle(
-                              backgroundColor: MaterialStatePropertyAll<Color>(Colors.blue),
-                              minimumSize: MaterialStatePropertyAll<Size>(Size(200,40))
-                            ),
-                          child: Row(
-                            children: [
-                              Text(
-                                "Cuisson",
-                                style:TextStyle(
-                                  color: Colors.white
-                                ) ,
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                        child: TextButton(onPressed: ()=>{},
+                              style:const ButtonStyle(
+                                backgroundColor: MaterialStatePropertyAll<Color>(Colors.blue),
+                                minimumSize: MaterialStatePropertyAll<Size>(Size(200,40))
                               ),
+                            child: Row(
+                              children: [
+                                Text(
+                                  "Cuisson",
+                                  style:TextStyle(
+                                    color: Colors.white
+                                  ) ,
+                                ),
 
-                            ],
-                          ),
+                              ],
+                            ),
 
-                          ),
+                            ),
+                      ),
                     ),
-                    Container(
-                      padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                      child: TextButton(
-                          onPressed:(){
-                            var  keyID = responseBuilder.orders[index]["id"];
-                            Provider.of<Orders>(context,listen:false).terminatedOrder(keyID);
-                          }
-                          ,
-                          style:const ButtonStyle(
-                              backgroundColor: MaterialStatePropertyAll<Color>(Colors.green),
-                              minimumSize: MaterialStatePropertyAll<Size>(Size(200,40))
-                          ),
-                          child: Text(
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                        child: TextButton(
+                            onPressed:(){
+                              var  keyID = responseBuilder.orders[index]["id"];
+                              Provider.of<Orders>(context,listen:false).terminatedOrder(keyID);
+                            }
+                            ,
+                            style:const ButtonStyle(
+                                backgroundColor: MaterialStatePropertyAll<Color>(Colors.green),
+                                minimumSize: MaterialStatePropertyAll<Size>(Size(200,40))
+                            ),
+                            child: Text(
           "Terminé"
           )),
+                      ),
                     )
 
                   ],

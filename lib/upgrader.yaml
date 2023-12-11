@@ -1,0 +1,3 @@
+appcast:
+  url: https://adamo.resarun.com/application/appcast.xml
+  version: 1.0.0
