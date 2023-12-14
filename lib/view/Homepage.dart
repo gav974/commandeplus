@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/Orders.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 
 class MyHomePage extends StatefulWidget {
@@ -17,11 +18,19 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
+        toolbarHeight: 50.00,
+        backgroundColor: Colors.red.shade900,
         title: Text(widget.title,
-        textAlign: TextAlign.center,),
+        textAlign: TextAlign.center,
+        style: GoogleFonts.poppins(
+            textStyle: TextStyle(
+              fontSize: 30,
+          fontWeight: FontWeight.w600,
+              color: Colors.white,
+        ),
+    ),
+        ),
         centerTitle: true,
-
       ),
       body: const Homepage(),
     );
@@ -30,10 +39,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
 class Homepage extends StatefulWidget {
   const Homepage({Key? key});
-
   @override
-  State<Homepage> createState() => HomepageState();
-}
+  State<Homepage> createState() => HomepageState();}
 
 class HomepageState extends State<Homepage> {
   late Timer _timer;
@@ -44,8 +51,6 @@ class HomepageState extends State<Homepage> {
   void initState() {
     super.initState();
     final _Orders = Provider.of<Orders>(context, listen: false);
-
-
     _order = _Orders.fetchOrders(); // Appel initial pour obtenir les commandes
     // Créer un Timer qui exécute la fonction chaque 20 secondes
 
@@ -61,8 +66,7 @@ class HomepageState extends State<Homepage> {
     super.dispose();
   }
 
-
-  iconLivraison(var shipping,) {
+  _iconLivraison(var shipping,) {
     if (shipping["email"].isEmpty){
       return Icon(
         Icons.storefront,
@@ -76,7 +80,7 @@ class HomepageState extends State<Homepage> {
     };
   }
 
-  iconPayment(var payment) {
+  _iconPayment(var payment) {
     if (payment.isEmpty){
       return Icon(
         Icons.credit_card_off,
@@ -89,23 +93,15 @@ class HomepageState extends State<Homepage> {
         size:_sizeIcon,
         color: Colors.green,
       );
-    };
+    }
   }
-
 
   @override
   Widget build(BuildContext context) {
     return Consumer<Orders>(
       builder: (context, responseBuilder,child) {
     if (responseBuilder.orders.isEmpty){
-    return const Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text('recupération des commandes'
-        ,textAlign: TextAlign.center,)
-      ],
-    );
+    return _InterrogationApiWoo();
     } else {
       return ListView.builder(
         itemBuilder: (context, index) {
@@ -119,21 +115,22 @@ class HomepageState extends State<Homepage> {
                     Container(
                       padding: EdgeInsets.symmetric(vertical:10,horizontal:10),
                       child: Text("Commande " + responseBuilder.orders[index]["id"].toString(),
-                      style: const TextStyle(
+                      style: GoogleFonts.montserrat(
+                        textStyle: TextStyle(
                         fontSize: 20.00,
                         height: 2,
                         fontWeight: FontWeight.bold,
-                      ),
+                      ),),
                     ),
                     ),
                     Container(
 
                       padding: EdgeInsets.symmetric(vertical:0,horizontal:12.0),
                       child:
-                    iconLivraison(responseBuilder.orders[index]["billing"]),
+                    _iconLivraison(responseBuilder.orders[index]["billing"]),
                     ),
                     Container(
-                      child:iconPayment(responseBuilder.orders[index]["transaction_id"])
+                      child:_iconPayment(responseBuilder.orders[index]["transaction_id"])
                     )
                   ],
                 ),
@@ -148,7 +145,11 @@ class HomepageState extends State<Homepage> {
                         width: MediaQuery.of(context).size.width / 2 - 12.0, // Largeur de chaque colonne
                         child: Text(
                           listItems["quantity"].toString() + "x " + listItems["name"],
-                          style: TextStyle(fontSize: 16.0),
+                          style: GoogleFonts.poppins(textStyle:
+                          TextStyle(fontSize: 20.0,
+                            fontWeight: FontWeight.w600,
+                          fontStyle: FontStyle.italic,
+                          ),),
                         ),
                       ),
                   ],
@@ -156,7 +157,6 @@ class HomepageState extends State<Homepage> {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.end,
-                  verticalDirection: VerticalDirection.down,
                   children: [
                     Expanded(
                       child: Container(
@@ -216,4 +216,22 @@ class HomepageState extends State<Homepage> {
       },
     );
   }
+}
+
+
+ _InterrogationApiWoo() {
+ return
+   Column(
+     crossAxisAlignment: CrossAxisAlignment.center,
+     mainAxisAlignment: MainAxisAlignment.center,
+     children: [
+       Image(image: AssetImage('assets/logo/appstore.png'),
+         width: 200, // Remplacez par la largeur souhaitée
+         height: 200, // Remplacez par la hauteur souhaitée
+         fit: BoxFit.cover
+       ),
+    Text('recupération des commandes'
+     ,textAlign: TextAlign.center,)
+]
+   );
 }

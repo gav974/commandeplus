@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+
 import 'package:woocommerce_api/woocommerce_api.dart';
 
 class Orders extends ChangeNotifier {
@@ -15,17 +15,24 @@ class Orders extends ChangeNotifier {
       url: "https://adamo.resarun.com",
       consumerKey: "ck_20fd9b55a3a3d5da7f421edd18a4bf000e0fe1bd",
       consumerSecret: "cs_f61247e8ebb7c1b5044da0a98acace426def394d");
-
+  //recupere les commandes active
   Future fetchOrders() async {
-    const items = "orders";
-    const param = "?status=processing";
-    const order = "&order=asc";
-    // Initialize the API
+    try {
+      const items = "orders";
+      const param = "?status=processing";
+      const order = "&order=asc";
+      // Initialize the API
 
-    // Get data using the "products" endpoint
-    orders = await wooCommerceAPI.getAsync(items + param + order);
+      // Get data using the "products" endpoint
+      orders = await wooCommerceAPI.getAsync(items + param + order);
 
-    _orders = orders;
+      _orders = orders;
+    }catch(e){
+   print(e);
+
+    }
+
+
     notifyListeners();
   }
 
