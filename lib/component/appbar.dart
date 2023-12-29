@@ -3,8 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 
 AppBar appbar(title){
   return AppBar(
-    toolbarHeight: 50.00,
-    backgroundColor: Colors.red.shade900,
     title: Text(title,
       textAlign: TextAlign.center,
       style: GoogleFonts.poppins(
@@ -15,6 +13,12 @@ AppBar appbar(title){
         ),
       ),
     ),
+    
+    leadingWidth: 25,
+    toolbarHeight: 80.00,
+    backgroundColor: Colors.red.shade900,
     centerTitle: true,
+    bottomOpacity: 0.1,
+    toolbarOpacity:0.5 ,
   );
 }

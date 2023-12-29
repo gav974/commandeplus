@@ -12,15 +12,16 @@ class Orders extends ChangeNotifier {
   }
 
   WooCommerceAPI wooCommerceAPI = WooCommerceAPI(
-      url: "https://adamo.resarun.com",
+      url: "https://adamo.re",
       consumerKey: "ck_20fd9b55a3a3d5da7f421edd18a4bf000e0fe1bd",
       consumerSecret: "cs_f61247e8ebb7c1b5044da0a98acace426def394d");
   //recupere les commandes active
+
   Future fetchOrders() async {
     try {
       const items = "orders";
       const param = "?status=processing";
-      const order = "&order=asc";
+      const order = "&order=desc";
       // Initialize the API
 
       // Get data using the "products" endpoint
@@ -56,4 +57,32 @@ class Orders extends ChangeNotifier {
       ;
     }
   }
+
+  Future Exec_livraison(int id) async {
+    try {
+      const items = "orders/";
+      var key = id;
+      var response = await wooCommerceAPI.postAsync(
+        items + key.toString(),
+        {
+          "meta_data": [
+            {
+              "key": "is_ready_livraison",
+              "value": "ready"
+            }
+          ]
+        },
+      );
+
+      this.fetchOrders();
+      print(response); // JSON Object with response
+    } catch (e) {
+      print(e);
+
+      notifyListeners()
+      ;
+    }
+  }
+
+
 }

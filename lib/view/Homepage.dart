@@ -36,95 +36,101 @@ class _HomepageState extends State<Homepage> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      contentPadding: EdgeInsets.symmetric(vertical: 20.0,horizontal: 40.0),
-        titlePadding: EdgeInsets.symmetric(vertical: 20.0,horizontal: 60.0),
-actionsPadding: EdgeInsets.all(60.0)
-        ,
-      backgroundColor: Colors.red[50],
-      icon: Icon(
-        Icons.notifications
+    return Container(
+      decoration: BoxDecoration(
+          image:DecorationImage(
+          image: AssetImage('assets/image/background-adamo.jpg'),
+          fit: BoxFit.cover)
       ),
-      title: Text('Choix du service',
-      style: GoogleFonts.poppins(
-        textStyle: TextStyle(
-          fontWeight: FontWeight.w600,
-          fontSize: 40,
+      child: AlertDialog(
+        contentPadding: EdgeInsets.symmetric(vertical: 20.0,horizontal: 40.0),
+          titlePadding: EdgeInsets.symmetric(vertical: 20.0,horizontal: 60.0),
+      actionsPadding: EdgeInsets.all(60.0),
+        backgroundColor: Colors.red[50],
+        icon: Icon(
+          Icons.notifications
         ),
-      )
-      ),
-      content:Text('Veuillez choisir votre service: ',
-      textAlign:  TextAlign.center,
-      style:GoogleFonts.montserrat(
-        textStyle: TextStyle(
-          fontWeight:  FontWeight.w200,
-
-        )
-      )
-      ),
-      actions: [
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            padding:const EdgeInsets.symmetric(vertical:20.0 , horizontal: 0.0),
-          ),
-        onPressed: () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const Boutique()),
-      );
-    }, child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(
-            Icons.shopping_cart,
-        color: Colors.red[400]
-        ),
-        Text(' Commande',
-        style: GoogleFonts.montserrat(
+        title: Text('Choix du service',
+        style: GoogleFonts.poppins(
           textStyle: TextStyle(
-            fontSize: Textsize,
+            fontWeight: FontWeight.w600,
+            fontSize: 40,
+          ),
+        )
+        ),
+        content:Text('Veuillez choisir votre service: ',
+        textAlign:  TextAlign.center,
+        style:GoogleFonts.montserrat(
+          textStyle: TextStyle(
+            fontWeight:  FontWeight.w200,
 
           )
-        ),
-          textAlign: TextAlign.center,
-
         )
-
-      ],
-    ),
         ),
-        SizedBox(height: 10),
-         ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            padding:const EdgeInsets.symmetric(vertical:20.0 , horizontal: 0.0),
-          ),
+        actions: [
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              padding:const EdgeInsets.symmetric(vertical:20.0 , horizontal: 0.0),
+            ),
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const Livraison()),
-            );
-          }, child: Center(
-            child: Row(
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const Boutique()),
+        );
+      }, child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.location_on,
-                  color: Colors.red[400],),
+        children: [
+          Icon(
+              Icons.shopping_cart,
+          color: Colors.red[400]
+          ),
+          Text(' Commande',
+          style: GoogleFonts.montserrat(
+            textStyle: TextStyle(
+              fontSize: Textsize,
 
-                Text('Livraison',
-    style: GoogleFonts.montserrat(
-    textStyle: TextStyle(
-    fontSize: Textsize,
+            )
+          ),
+            textAlign: TextAlign.center,
+          )
 
-    )
-    ),
-    textAlign: TextAlign.center,
+        ],
+      ),
+          ),
+          SizedBox(height: 10),
+           ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              padding:const EdgeInsets.symmetric(vertical:20.0 , horizontal: 0.0),
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const Livraison()),
+              );
+            }, child: Center(
+              child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.location_on,
+                    color: Colors.red[400],),
 
-    ),
-              ],
+                  Text('Livraison',
+      style: GoogleFonts.montserrat(
+      textStyle: TextStyle(
+      fontSize: Textsize,
+
+      )
+      ),
+      textAlign: TextAlign.center,
+      ),
+                ],
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
+
+

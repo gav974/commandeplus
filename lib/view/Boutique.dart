@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../models/Orders.dart';
+import '../component/avertissement.dart';
 
 class Boutique extends StatefulWidget {
   const Boutique({super.key});
@@ -56,11 +57,13 @@ class _viewBoutiqueState extends State<viewBoutique> {
     _timer.cancel();
     super.dispose();
   }
-
+///vérifie si c'est une livraison
   _iconLivraison(
-    var shipping,
+    var shipping
   ) {
-    if (shipping["email"].isEmpty) {
+    var title_shipping = shipping[1]["value"].toString();
+
+    if (title_shipping != "delivery") {
       return Icon(
         Icons.storefront,
         size: _sizeIcon,
@@ -71,9 +74,9 @@ class _viewBoutiqueState extends State<viewBoutique> {
         size: _sizeIcon,
       );
     }
-    ;
-  }
 
+  }
+///vérifie si la commande a été payé en ligne
   _iconPayment(var payment) {
     if (payment.isEmpty) {
       return Icon(
@@ -125,7 +128,7 @@ class _viewBoutiqueState extends State<viewBoutique> {
                           padding: EdgeInsets.symmetric(
                               vertical: 0, horizontal: 12.0),
                           child: _iconLivraison(
-                              responseBuilder.orders[index]["billing"]),
+                              responseBuilder.orders[index]["meta_data"]),
                         ),
                         Container(
                             child: _iconPayment(responseBuilder.orders[index]
@@ -164,33 +167,7 @@ class _viewBoutiqueState extends State<viewBoutique> {
                      // crossAxisAlignment: CrossAxisAlignment.end,
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 10.0, horizontal: 10.0),
-                          child: TextButton(
-                            onPressed: (){
-                            },
-                            style:TextButton.styleFrom(
-                              textStyle: GoogleFonts.poppins(
-                                  fontSize: 18,
-                                  fontWeight:FontWeight.w600,
-                                  color: Colors.white
-                                  
-                              ),
-                              padding: EdgeInsets.symmetric(vertical:20.0 ,horizontal: 50.0),
-                              backgroundColor:Colors.blue,
-
-              ),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "Cuisson",
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                        _isLivraison( responseBuilder.orders[index]["meta_data"]),
                         Container(
                           padding: EdgeInsets.symmetric(
                               vertical: 10.0, horizontal: 10.0),
@@ -198,9 +175,14 @@ class _viewBoutiqueState extends State<viewBoutique> {
                               onPressed: () {
                                 var keyID =
                                     responseBuilder.orders[index]["id"];
-                                Provider.of<Orders>(context, listen: false)
-                                    .terminatedOrder(keyID);
-                              },
+                                showDialog(
+                                    context: context,
+                                    builder: (context){
+                                      return Avertissement(ID : keyID);
+                                    }
+                                );                                //Provider.of<Orders>(context, listen: false).terminatedOrder(keyID);
+                                print('pressed');
+                                },
                               style: TextButton.styleFrom(
                                 textStyle: GoogleFonts.poppins(
                                   fontSize: 18,
@@ -230,6 +212,8 @@ class _viewBoutiqueState extends State<viewBoutique> {
   }
 }
 
+
+///ecran qui aide à patienter lors de la recupération des commandes
 _InterrogationApiWoo() {
   return Row(
     crossAxisAlignment: CrossAxisAlignment.center,
@@ -253,3 +237,40 @@ _InterrogationApiWoo() {
   );
 }
 
+///détermine si l'on doit afficher le bouton livraison
+ _isLivraison( isLivraison){
+print(isLivraison[1]) ;
+if( isLivraison[1]["value"] == "delivery"){
+return
+    Container(
+      padding: EdgeInsets.symmetric(
+          vertical: 10.0, horizontal: 10.0),
+      child: TextButton(
+        onPressed: (){
+        },
+        style:TextButton.styleFrom(
+          textStyle: GoogleFonts.poppins(
+              fontSize: 18,
+              fontWeight:FontWeight.w600,
+              color: Colors.white
+
+          ),
+          padding: EdgeInsets.symmetric(vertical:20.0 ,horizontal: 50.0),
+          backgroundColor:Colors.blue,
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              "A livré",
+            ),
+          ],
+        ),
+      ),
+    );
+}
+else{
+    return Container();
+
+  }
+}
