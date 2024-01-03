@@ -1,13 +1,13 @@
 import 'dart:async';
 
-import 'package:commandeplus/component/appbar.dart';
+import 'package:commandeplus/component/Appbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../models/Orders.dart';
-import '../component/avertissement.dart';
+import '../component/Avertissement.dart';
 
 class Boutique extends StatefulWidget {
   const Boutique({super.key});
@@ -43,7 +43,7 @@ class _viewBoutiqueState extends State<viewBoutique> {
   @override
   void initState() {
     super.initState();
-    final _Orders = Provider.of<Orders>(context, listen: false);
+    final _Orders = Provider.of<Orders>(context as BuildContext, listen: false);
     _order = _Orders.fetchOrders(); // Appel initial pour obtenir les commandes
     // Créer un Timer qui exécute la fonction chaque 20 secondes
 
@@ -95,119 +95,132 @@ class _viewBoutiqueState extends State<viewBoutique> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<Orders>(
-      builder: (context, responseBuilder, child) {
-        if (responseBuilder.orders.isEmpty) {
-          return _InterrogationApiWoo();
-        } else {
-          return ListView.builder(
-            itemBuilder: (context, index) {
-              return Container(
-                padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
+    return Container(
+      child: Consumer<Orders>(
+        builder: (context, responseBuilder, child) {
+          if (responseBuilder.orders.isEmpty) {
+            return _InterrogationApiWoo();
+          } else {
+            return ListView.builder(
+              itemCount: responseBuilder.orders.length,
+              itemBuilder: (context, index) {
+                if(responseBuilder.orders[index]["meta_data"][2]["value"]  == "null") {
+                  return Container(
+                    padding: EdgeInsets.symmetric(
+                        vertical: 10.0, horizontal: 10.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 10),
-                          child: Text(
-                            "Commande " +
-                                responseBuilder.orders[index]["id"].toString(),
-                            style: GoogleFonts.montserrat(
-                              textStyle: TextStyle(
-                                fontSize: 20.00,
-                                height: 2,
-                                fontWeight: FontWeight.bold,
+                        Row(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 10),
+                              child: Text(
+                                "Commande " +
+                                    responseBuilder.orders[index]["id"]
+                                        .toString(),
+                                style: GoogleFonts.montserrat(
+                                  textStyle: TextStyle(
+                                    fontSize: 20.00,
+                                    height: 2,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 0, horizontal: 12.0),
-                          child: _iconLivraison(
-                              responseBuilder.orders[index]["meta_data"]),
-                        ),
-                        Container(
-                            child: _iconPayment(responseBuilder.orders[index]
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 0, horizontal: 12.0),
+                              child: _iconLivraison(
+                                  responseBuilder.orders[index]["meta_data"]),
+                            ),
+                            Container(
+                                child: _iconPayment(responseBuilder.orders[index]
                                 ["transaction_id"]))
-                      ],
-                    ),
-                    Wrap(
-                      direction: Axis.horizontal,
-                      runAlignment: WrapAlignment.spaceBetween,
-                      runSpacing: 20.00,
+                          ],
+                        ),
+                        Wrap(
+                          direction: Axis.horizontal,
+                          runAlignment: WrapAlignment.spaceBetween,
+                          runSpacing: 20.00,
 
-                      children: [
-                        for (var listItems in responseBuilder.orders[index]
+                          children: [
+                            for (var listItems in responseBuilder.orders[index]
                             ["line_items"])
-                          Container(
-                            height: 30.0,
-                            width: MediaQuery.of(context).size.width / 2 -
-                                12.0, // Largeur de chaque colonne
-                            child: Text(
-                              listItems["quantity"].toString() +
-                                  "x " +
-                                  listItems["name"],
-                              textAlign: TextAlign.center,
-                              style: GoogleFonts.poppins(
-                                textStyle: TextStyle(
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.w400,
-                                  fontStyle: FontStyle.italic,
+                              Container(
+                                height: 30.0,
+                                width: MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width / 2 -
+                                    12.0, // Largeur de chaque colonne
+                                child: Text(
+                                  listItems["quantity"].toString() +
+                                      "x " +
+                                      listItems["name"],
+                                  textAlign: TextAlign.center,
+                                  style: GoogleFonts.poppins(
+                                    textStyle: TextStyle(
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.w400,
+                                      fontStyle: FontStyle.italic,
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                      ],
-                    ),
-                    Row(
-                     // crossAxisAlignment: CrossAxisAlignment.end,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        _isLivraison( responseBuilder.orders[index]["meta_data"]),
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 10.0, horizontal: 10.0),
-                          child: TextButton(
-                              onPressed: () {
-                                var keyID =
+                          ],
+                        ),
+                        Row(
+                          // crossAxisAlignment: CrossAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            _isLivraison(context,
+                                responseBuilder.orders[index]["id"],
+                                responseBuilder.orders[index]["meta_data"]),
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 10.0, horizontal: 10.0),
+                              child: TextButton(
+                                  onPressed: () {
+                                    var keyID =
                                     responseBuilder.orders[index]["id"];
-                                showDialog(
-                                    context: context,
-                                    builder: (context){
-                                      return Avertissement(ID : keyID);
-                                    }
-                                );                                //Provider.of<Orders>(context, listen: false).terminatedOrder(keyID);
-                                print('pressed');
-                                },
-                              style: TextButton.styleFrom(
-                                textStyle: GoogleFonts.poppins(
-                                  fontSize: 18,
-                                  fontWeight:FontWeight.w600,
-                                  color: Colors.white
-                                ),
-                                padding: EdgeInsets.symmetric(vertical:20.0 ,horizontal: 50.0),
-                                backgroundColor:Colors.green,
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return Avertissement(ID: keyID);
+                                        }
+                                    ); //Provider.of<Orders>(context, listen: false).terminatedOrder(keyID);
+                                    print('pressed');
+                                  },
+                                  style: TextButton.styleFrom(
+                                    textStyle: GoogleFonts.poppins(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white
+                                    ),
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 20.0, horizontal: 50.0),
+                                    backgroundColor: Colors.green,
+                                  ),
+                                  child: Text("Terminé")
                               ),
-                              child: Text("Terminé")
-                          ),
+                            )
+                          ],
+                        ),
+                        Divider(
+                          thickness: 2.0,
                         )
                       ],
                     ),
-                    Divider(
-                      thickness: 2.0,
-                    )
-                  ],
-                ),
-              );
-            },
-            itemCount: responseBuilder.orders.length,
-          );
-        }
-      },
+                  );
+                }
+              },
+
+            );
+          }
+        },
+      ),
     );
   }
 }
@@ -238,7 +251,7 @@ _InterrogationApiWoo() {
 }
 
 ///détermine si l'on doit afficher le bouton livraison
- _isLivraison( isLivraison){
+ _isLivraison(context, id_orderlivraison , isLivraison){
 print(isLivraison[1]) ;
 if( isLivraison[1]["value"] == "delivery"){
 return
@@ -247,6 +260,7 @@ return
           vertical: 10.0, horizontal: 10.0),
       child: TextButton(
         onPressed: (){
+          Provider.of<Orders>(context, listen: false).exec_livraison(id_orderlivraison);
         },
         style:TextButton.styleFrom(
           textStyle: GoogleFonts.poppins(

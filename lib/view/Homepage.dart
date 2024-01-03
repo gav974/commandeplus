@@ -1,4 +1,4 @@
-import 'package:commandeplus/component/appbar.dart';
+import 'package:commandeplus/component/Appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'Boutique.dart';

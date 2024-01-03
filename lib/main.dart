@@ -12,7 +12,7 @@ import 'view/Homepage.dart';
 void main() async {
   // Récupérez la version actuelle de l'application
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft]);
+  //SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft]);
 
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
   String localVersion = packageInfo.version;

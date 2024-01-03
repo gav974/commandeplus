@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
+
 
 import '../models/Orders.dart';
 
@@ -12,8 +12,6 @@ class Avertissement extends StatelessWidget {
   @override
 
   Widget build(BuildContext context) {
-
-
     return AlertDialog(
       title: Row(
         children: [

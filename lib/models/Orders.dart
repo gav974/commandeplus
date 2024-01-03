@@ -48,7 +48,7 @@ class Orders extends ChangeNotifier {
         },
       );
 
-      this.fetchOrders();
+      fetchOrders();
       print(response); // JSON Object with response
     } catch (e) {
       print(e);
@@ -58,7 +58,7 @@ class Orders extends ChangeNotifier {
     }
   }
 
-  Future Exec_livraison(int id) async {
+  Future exec_livraison(int id) async {
     try {
       const items = "orders/";
       var key = id;
@@ -73,8 +73,8 @@ class Orders extends ChangeNotifier {
           ]
         },
       );
+      fetchOrders();
 
-      this.fetchOrders();
       print(response); // JSON Object with response
     } catch (e) {
       print(e);
