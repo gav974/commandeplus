@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'Boutique.dart';
 import 'Livraison.dart';
-
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
@@ -36,6 +36,7 @@ class _HomepageState extends State<Homepage> {
 
   @override
   Widget build(BuildContext context) {
+    FlutterNativeSplash.remove();
     return Container(
       decoration: BoxDecoration(
           image:DecorationImage(

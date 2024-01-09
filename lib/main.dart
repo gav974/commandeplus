@@ -5,11 +5,15 @@ import 'package:flutter/services.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:wakelock/wakelock.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'controller/update.dart';
 import 'models/Orders.dart';
 import 'view/Homepage.dart';
 
+
 void main() async {
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   // Récupérez la version actuelle de l'application
   WidgetsFlutterBinding.ensureInitialized();
   //SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft]);
@@ -47,6 +51,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.grey),
         useMaterial3: true,
       ),
+      debugShowCheckedModeBanner: false,
       home: MyHomePage(title: 'Commande Adamo'),
     );
   }

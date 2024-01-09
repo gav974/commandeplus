@@ -104,7 +104,10 @@ class _viewBoutiqueState extends State<viewBoutique> {
             return ListView.builder(
               itemCount: responseBuilder.orders.length,
               itemBuilder: (context, index) {
-                if(responseBuilder.orders[index]["meta_data"][2]["value"]  == "null") {
+
+                if(responseBuilder.orders[index]["meta_data"] != null &&
+                    responseBuilder.orders[index]["meta_data"].length >= 2 &&
+                    responseBuilder.orders[index]["meta_data"][2]["value"]  == "null") {
                   return Container(
                     padding: EdgeInsets.symmetric(
                         vertical: 10.0, horizontal: 10.0),
@@ -136,8 +139,9 @@ class _viewBoutiqueState extends State<viewBoutique> {
                                   responseBuilder.orders[index]["meta_data"]),
                             ),
                             Container(
-                                child: _iconPayment(responseBuilder.orders[index]
-                                ["transaction_id"]))
+                                child: _iconPayment(
+                                    responseBuilder.orders[index]
+                                    ["transaction_id"]))
                           ],
                         ),
                         Wrap(
@@ -180,7 +184,7 @@ class _viewBoutiqueState extends State<viewBoutique> {
                                 responseBuilder.orders[index]["meta_data"]),
                             Container(
                               padding: EdgeInsets.symmetric(
-                                  vertical: 10.0, horizontal: 10.0),
+                                  vertical: 5.0, horizontal: 5.0),
                               child: TextButton(
                                   onPressed: () {
                                     var keyID =
@@ -200,7 +204,7 @@ class _viewBoutiqueState extends State<viewBoutique> {
                                         color: Colors.white
                                     ),
                                     padding: EdgeInsets.symmetric(
-                                        vertical: 20.0, horizontal: 50.0),
+                                        vertical: 10.0, horizontal: 20.0),
                                     backgroundColor: Colors.green,
                                   ),
                                   child: Text("Terminé")
@@ -214,6 +218,8 @@ class _viewBoutiqueState extends State<viewBoutique> {
                       ],
                     ),
                   );
+                }else{
+                  return Container();
                 }
               },
 
@@ -252,12 +258,12 @@ _InterrogationApiWoo() {
 
 ///détermine si l'on doit afficher le bouton livraison
  _isLivraison(context, id_orderlivraison , isLivraison){
-print(isLivraison[1]) ;
+print("islivraison"  + isLivraison[1].toString()) ;
 if( isLivraison[1]["value"] == "delivery"){
 return
     Container(
       padding: EdgeInsets.symmetric(
-          vertical: 10.0, horizontal: 10.0),
+          vertical: 5.0, horizontal: 5.0),
       child: TextButton(
         onPressed: (){
           Provider.of<Orders>(context, listen: false).exec_livraison(id_orderlivraison);
@@ -269,7 +275,7 @@ return
               color: Colors.white
 
           ),
-          padding: EdgeInsets.symmetric(vertical:20.0 ,horizontal: 50.0),
+          padding: EdgeInsets.symmetric(vertical:10.0 ,horizontal: 20.0),
           backgroundColor:Colors.blue,
         ),
         child: Row(
@@ -282,9 +288,7 @@ return
         ),
       ),
     );
-}
-else{
+} else {
     return Container();
-
   }
 }

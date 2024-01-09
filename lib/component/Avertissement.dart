@@ -32,32 +32,35 @@ class Avertissement extends StatelessWidget {
       content: Text('Êtes-vous sûr de vouloir terminer la commande '+ ID.toString()  + ' ?'),
       insetPadding: EdgeInsets.all(10.0),
       actions: [
-        TextButton(
-          style:TextButton.styleFrom(
-            minimumSize: Size(10, 0),
-  side:BorderSide(
-    width: 2.00,
-    color: Colors.green,
-  ),
-    ),
-          onPressed: () {
-            // Si l'utilisateur appuie sur "Annuler", ferme le dialogue sans terminer la commande
-            Navigator.of(context).pop(false);
-          },
-          child: Row(
-            children: [
-              Icon(
-                Icons.close,
-                color: Colors.green,
+        Container(
+          width:50,
+          child: TextButton(
+            style:TextButton.styleFrom(
+              minimumSize: Size(10, 0),
+            side:BorderSide(
+              width: 2.00,
+              color: Colors.green,
+            ),
               ),
-              Text('Annuler',
-              style: GoogleFonts.lato(
-                textStyle: TextStyle(
-                  color: Colors.green
+            onPressed: () {
+              // Si l'utilisateur appuie sur "Annuler", ferme le dialogue sans terminer la commande
+              Navigator.of(context).pop(false);
+            },
+            child: Row(
+              children: [
+                Icon(
+                  Icons.close,
+                  color: Colors.green,
                 ),
-              ),
-                      ),
-            ],
+                Text('Annuler',
+                style: GoogleFonts.lato(
+                  textStyle: TextStyle(
+                    color: Colors.green
+                  ),
+                ),
+                        ),
+              ],
+            ),
           ),
         ),
         TextButton(

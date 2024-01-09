@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+
 AppBar appbar(title){
   return AppBar(
     title: Text(title,
@@ -13,12 +14,18 @@ AppBar appbar(title){
         ),
       ),
     ),
-    
-    leadingWidth: 25,
-    toolbarHeight: 80.00,
-    backgroundColor: Colors.red.shade900,
     centerTitle: true,
-    bottomOpacity: 0.1,
-    toolbarOpacity:0.5 ,
+    flexibleSpace: Container(
+      decoration: const BoxDecoration(
+    gradient: LinearGradient(
+      colors: [Color.fromRGBO(227, 39, 12, 1),Color.fromRGBO(140, 0, 0, 1)],
+      begin: Alignment.topCenter,
+      end:Alignment.bottomCenter ,
+    ),
+    ),
+    ),
+    titleSpacing: 2,
+    bottomOpacity: 0.8,
   );
 }
+

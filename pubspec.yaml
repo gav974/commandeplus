@@ -9,9 +9,7 @@ environment:
 
 dependencies:
   flutter:
-
     sdk: flutter
-
   cupertino_icons: ^1.0.6
   woocommerce_api: ^0.1.0
   wakelock: ^0.6.2
@@ -26,11 +24,16 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^3.0.1
+  flutter_native_splash: ^2.3.9
+
+
+flutter_native_splash:
+  color: "#bd1719"
+  image: assets/logo/appstore.png
+
 
 flutter:
   uses-material-design: true
-
-
 
   assets:
       - assets/logo/
