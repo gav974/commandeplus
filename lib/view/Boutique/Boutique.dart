@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:commandeplus/component/Appbar.dart';
+import 'package:commandeplus/component/Font_line.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -44,6 +45,7 @@ class _viewBoutiqueState extends State<viewBoutique> {
   void initState() {
     super.initState();
     final _Orders = Provider.of<Orders>(context as BuildContext, listen: false);
+   // final _Orders  = context.watch<Orders>();
     _order = _Orders.fetchOrders(); // Appel initial pour obtenir les commandes
     // Créer un Timer qui exécute la fonction chaque 20 secondes
 
@@ -96,19 +98,30 @@ class _viewBoutiqueState extends State<viewBoutique> {
   @override
   Widget build(BuildContext context) {
     return Container(
+
       child: Consumer<Orders>(
         builder: (context, responseBuilder, child) {
           if (responseBuilder.orders.isEmpty) {
-            return _InterrogationApiWoo();
+            return _InterrogationApiWoo
+
+
+
+
+
+
+              (context);
           } else {
+            var index_lines = 0;
+
             return ListView.builder(
               itemCount: responseBuilder.orders.length,
               itemBuilder: (context, index) {
-
                 if(responseBuilder.orders[index]["meta_data"] != null &&
                     responseBuilder.orders[index]["meta_data"].length >= 2 &&
                     responseBuilder.orders[index]["meta_data"][2]["value"]  == "null") {
+                  index_lines ++;
                   return Container(
+                    color: colorlines(index_lines),
                     padding: EdgeInsets.symmetric(
                         vertical: 10.0, horizontal: 10.0),
                     child: Column(
@@ -141,8 +154,13 @@ class _viewBoutiqueState extends State<viewBoutique> {
                             Container(
                                 child: _iconPayment(
                                     responseBuilder.orders[index]
-                                    ["transaction_id"]))
+                                    ["transaction_id"])),
+                            Spacer(
+                              flex: 1,
+                            ),
+                            price_commande(responseBuilder.orders[index]['total'])
                           ],
+
                         ),
                         Wrap(
                           direction: Axis.horizontal,
@@ -233,26 +251,42 @@ class _viewBoutiqueState extends State<viewBoutique> {
 
 
 ///ecran qui aide à patienter lors de la recupération des commandes
-_InterrogationApiWoo() {
-  return Row(
-    crossAxisAlignment: CrossAxisAlignment.center,
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      Column(
+_InterrogationApiWoo(context) {
+  return Container(
+    width: MediaQuery.of(context).size.width,
+    height: MediaQuery.of(context).size.height,
+    decoration: BoxDecoration(
+      image: DecorationImage(image: AssetImage('assets/image/background.png'),
+          fit:BoxFit.cover
+
+      ),
+    ),
+    child: Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image(
-                image: AssetImage('assets/logo/appstore.png'),
-                width: 200, // Remplacez par la largeur souhaitée
-                height: 200, // Remplacez par la hauteur souhaitée
-                fit: BoxFit.cover),
-            Text(
-              'recupération des commandes',
-              textAlign: TextAlign.center,
-            )
-          ]),
-    ],
+      children: [
+        Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image(
+                  image: AssetImage('assets/logo/appstore.png'),
+                  width: 100, // Remplacez par la largeur souhaitée
+                  height: 100, // Remplacez par la hauteur souhaitée
+                  fit: BoxFit.cover),
+              Text(
+                'recupération des commandes',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.lato(
+                  textStyle: TextStyle(
+                    fontSize: 20,
+                    color:Colors.white
+                  )
+                ),
+              )
+            ]),
+      ],
+    ),
   );
 }
 
@@ -291,4 +325,21 @@ return
 } else {
     return Container();
   }
+}
+///Affiche le montant de commande au total
+price_commande(String price){
+  return Container(
+    padding: EdgeInsets.symmetric(vertical: 10.0,horizontal: 10.0),
+    decoration: const BoxDecoration(
+      color: Color.fromRGBO(248, 97, 97, 0.33725490196078434)
+    ),
+    child: Text(
+      price.toString()+" €",
+      style: GoogleFonts.lato(
+  textStyle: TextStyle(
+  fontSize: 18,fontWeight: FontWeight.w600
+  ),
+    ),
+  )
+  );
 }
