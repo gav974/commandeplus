@@ -13,6 +13,7 @@ class Avertissement extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return AlertDialog(
+      actionsAlignment: MainAxisAlignment.center,
       title: Row(
         children: [
           Icon(
@@ -29,60 +30,75 @@ class Avertissement extends StatelessWidget {
           ),),
         ],
       ),
-      content: Text('Êtes-vous sûr de vouloir terminer la commande '+ ID.toString()  + ' ?'),
+      content: Text('Êtes-vous sûr de vouloir terminer la commande '+ ID.toString()  + ' ?',
+      style: GoogleFonts.lato(
+        textStyle: TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w800
+        )
+      ),),
       insetPadding: EdgeInsets.all(10.0),
       actions: [
-        Container(
-          width:50,
-          child: TextButton(
-            style:TextButton.styleFrom(
-              minimumSize: Size(10, 0),
-            side:BorderSide(
-              width: 2.00,
-              color: Colors.green,
-            ),
-              ),
-            onPressed: () {
-              // Si l'utilisateur appuie sur "Annuler", ferme le dialogue sans terminer la commande
-              Navigator.of(context).pop(false);
-            },
-            child: Row(
-              children: [
-                Icon(
-                  Icons.close,
+        Column(
+          children: [
+            Container(
+              width:MediaQuery.of(context).size.width* 0.5,
+              child: TextButton(
+                style:TextButton.styleFrom(
+                  minimumSize: Size(10, 0),
+                side:BorderSide(
+                  width: 2.00,
                   color: Colors.green,
                 ),
-                Text('Annuler',
-                style: GoogleFonts.lato(
-                  textStyle: TextStyle(
-                    color: Colors.green
                   ),
+                onPressed: () {
+                  // Si l'utilisateur appuie sur "Annuler", ferme le dialogue sans terminer la commande
+                  Navigator.of(context).pop(false);
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.close,
+                      color: Colors.green,
+                    ),
+                    Text('Annuler',
+                    style: GoogleFonts.lato(
+                      textStyle: TextStyle(
+                        color: Colors.green
+                      ),
+                    ),
+                    ),
+                  ],
                 ),
-                        ),
-              ],
+              ),
             ),
-          ),
-        ),
-        TextButton(
-          style:TextButton.styleFrom(
-            minimumSize: Size(10, 0),
-            side:BorderSide(
-              width: 2.00,
-              color: Colors.red,
-            ),
-          ),
-          onPressed: () {
-            // Si l'utilisateur appuie sur "Terminer", ferme le dialogue et termine la commande
-            //Provider.of<Orders>(context, listen: false).terminatedOrder(ID);
-            Navigator.of(context).pop(true);
-          },
-          child: Row(
-            children: [
-              Icon(Icons.delete,
-              color: Colors.red,)
-              ,Text('Terminer'),
-            ],
-          ),
+    Container(
+    width:MediaQuery.of(context).size.width* 0.5,
+    child: TextButton(
+    style:TextButton.styleFrom(
+    minimumSize: Size(10, 0),
+    side:BorderSide(
+    width: 2.00,
+    color: Colors.red,
+    ),
+    ),
+    onPressed: () {
+    // Si l'utilisateur appuie sur "Terminer", ferme le dialogue et termine la commande
+    //Provider.of<Orders>(context, listen: false).terminatedOrder(ID);
+    Navigator.of(context).pop(true);
+    },
+    child: Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+    Icon(Icons.delete,
+    color: Colors.red,)
+    ,Text('Terminer'),
+    ],
+    ),
+    ),
+    )
+          ],
         ),
       ],
     );

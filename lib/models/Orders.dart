@@ -26,14 +26,10 @@ class Orders extends ChangeNotifier {
 
       // Get data using the "products" endpoint
       orders = await wooCommerceAPI.getAsync(items + param + order);
-
       _orders = orders;
     }catch(e){
    print(e);
-
     }
-
-
     notifyListeners();
   }
 

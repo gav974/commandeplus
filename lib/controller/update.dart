@@ -7,9 +7,10 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:wakelock/wakelock.dart';
 import '../main.dart';
 import '../models/Orders.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 Future<String?> getServerApkVersion() async {
-  final serverjson = "https://adamo.resarun.com/application/appcast.json";
+  final serverjson = "https://adamo.re/application/appcast.json";
   try {
     final responseJson = await http.get(Uri.parse(serverjson));
     if (responseJson.statusCode == 200 ) {
@@ -27,7 +28,8 @@ Future<String?> getServerApkVersion() async {
 }
 
 void showUpdateDialog(String serverVersion) {
-  runApp(
+  FlutterNativeSplash.remove();
+  return  runApp(
     MaterialApp(
       home: Builder(
         builder: (context) => AlertDialog(
@@ -63,7 +65,7 @@ void showUpdateDialog(String serverVersion) {
 }
 
 void launchDownloadLink() async {
-  final String serverUrl = "https://adamo.resarun.com/application/app-release.apk";
+  final String serverUrl = "https://adamo.re/application/app-release.apk";
   try {
     await launchUrl(Uri.parse(serverUrl));
   } catch (e) {

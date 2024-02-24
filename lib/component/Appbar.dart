@@ -3,14 +3,19 @@ import 'package:google_fonts/google_fonts.dart';
 
 
 AppBar appbar(title){
+  final Color theme_color = Colors.white;
+
+
+
   return AppBar(
+
     title: Text(title,
       textAlign: TextAlign.center,
       style: GoogleFonts.poppins(
         textStyle: TextStyle(
           fontSize: 30,
           fontWeight: FontWeight.w600,
-          color: Colors.white,
+          color: theme_color
         ),
       ),
     ),

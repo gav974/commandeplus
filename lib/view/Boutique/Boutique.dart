@@ -7,8 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-import '../models/Orders.dart';
-import '../component/Avertissement.dart';
+import '../../models/Orders.dart';
+import '../../component/Avertissement.dart';
+import '../../view/Boutique/IconPayment.dart';
+import 'IsLivraison.dart';
+import 'Price_commande.dart';
+import 'InterrogationApiWoo.dart';
 
 class Boutique extends StatefulWidget {
   const Boutique({super.key});
@@ -39,7 +43,7 @@ class _viewBoutiqueState extends State<viewBoutique> {
   @override
   late Timer _timer;
   late Future<dynamic> _order;
-  double _sizeIcon = 40.0;
+
 
   @override
   void initState() {
@@ -59,57 +63,14 @@ class _viewBoutiqueState extends State<viewBoutique> {
     _timer.cancel();
     super.dispose();
   }
-///vérifie si c'est une livraison
-  _iconLivraison(
-    var shipping
-  ) {
-    var title_shipping = shipping[1]["value"].toString();
-
-    if (title_shipping != "delivery") {
-      return Icon(
-        Icons.storefront,
-        size: _sizeIcon,
-      );
-    } else {
-      return Icon(
-        Icons.motorcycle,
-        size: _sizeIcon,
-      );
-    }
-
-  }
-///vérifie si la commande a été payé en ligne
-  _iconPayment(var payment) {
-    if (payment.isEmpty) {
-      return Icon(
-        Icons.credit_card_off,
-        size: _sizeIcon,
-        color: Colors.red,
-      );
-    } else {
-      return Icon(
-        Icons.credit_score,
-        size: _sizeIcon,
-        color: Colors.green,
-      );
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-
       child: Consumer<Orders>(
         builder: (context, responseBuilder, child) {
           if (responseBuilder.orders.isEmpty) {
-            return _InterrogationApiWoo
-
-
-
-
-
-
-              (context);
+            return InterrogationApiWoo(context);
           } else {
             var index_lines = 0;
 
@@ -148,17 +109,17 @@ class _viewBoutiqueState extends State<viewBoutique> {
                             Container(
                               padding: EdgeInsets.symmetric(
                                   vertical: 0, horizontal: 12.0),
-                              child: _iconLivraison(
+                              child: IconPayment.iconLivraison (
                                   responseBuilder.orders[index]["meta_data"]),
                             ),
                             Container(
-                                child: _iconPayment(
+                                child: IconPayment.iconPayment(
                                     responseBuilder.orders[index]
                                     ["transaction_id"])),
                             Spacer(
                               flex: 1,
                             ),
-                            price_commande(responseBuilder.orders[index]['total'])
+                            Price_commande(responseBuilder.orders[index]['total'])
                           ],
 
                         ),
@@ -197,7 +158,7 @@ class _viewBoutiqueState extends State<viewBoutique> {
                           // crossAxisAlignment: CrossAxisAlignment.end,
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            _isLivraison(context,
+                            IsLivraison(context,
                                 responseBuilder.orders[index]["id"],
                                 responseBuilder.orders[index]["meta_data"]),
                             Container(
@@ -250,96 +211,3 @@ class _viewBoutiqueState extends State<viewBoutique> {
 }
 
 
-///ecran qui aide à patienter lors de la recupération des commandes
-_InterrogationApiWoo(context) {
-  return Container(
-    width: MediaQuery.of(context).size.width,
-    height: MediaQuery.of(context).size.height,
-    decoration: BoxDecoration(
-      image: DecorationImage(image: AssetImage('assets/image/background.png'),
-          fit:BoxFit.cover
-
-      ),
-    ),
-    child: Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image(
-                  image: AssetImage('assets/logo/appstore.png'),
-                  width: 100, // Remplacez par la largeur souhaitée
-                  height: 100, // Remplacez par la hauteur souhaitée
-                  fit: BoxFit.cover),
-              Text(
-                'recupération des commandes',
-                textAlign: TextAlign.center,
-                style: GoogleFonts.lato(
-                  textStyle: TextStyle(
-                    fontSize: 20,
-                    color:Colors.white
-                  )
-                ),
-              )
-            ]),
-      ],
-    ),
-  );
-}
-
-///détermine si l'on doit afficher le bouton livraison
- _isLivraison(context, id_orderlivraison , isLivraison){
-print("islivraison"  + isLivraison[1].toString()) ;
-if( isLivraison[1]["value"] == "delivery"){
-return
-    Container(
-      padding: EdgeInsets.symmetric(
-          vertical: 5.0, horizontal: 5.0),
-      child: TextButton(
-        onPressed: (){
-          Provider.of<Orders>(context, listen: false).exec_livraison(id_orderlivraison);
-        },
-        style:TextButton.styleFrom(
-          textStyle: GoogleFonts.poppins(
-              fontSize: 18,
-              fontWeight:FontWeight.w600,
-              color: Colors.white
-
-          ),
-          padding: EdgeInsets.symmetric(vertical:10.0 ,horizontal: 20.0),
-          backgroundColor:Colors.blue,
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              "A livré",
-            ),
-          ],
-        ),
-      ),
-    );
-} else {
-    return Container();
-  }
-}
-///Affiche le montant de commande au total
-price_commande(String price){
-  return Container(
-    padding: EdgeInsets.symmetric(vertical: 10.0,horizontal: 10.0),
-    decoration: const BoxDecoration(
-      color: Color.fromRGBO(248, 97, 97, 0.33725490196078434)
-    ),
-    child: Text(
-      price.toString()+" €",
-      style: GoogleFonts.lato(
-  textStyle: TextStyle(
-  fontSize: 18,fontWeight: FontWeight.w600
-  ),
-    ),
-  )
-  );
-}
